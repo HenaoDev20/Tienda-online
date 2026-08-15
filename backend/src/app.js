@@ -1,6 +1,10 @@
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
+
+// Permitir peticiones desde el frontend
+app.use(cors());
 
 // Middleware para leer JSON
 app.use(express.json());
