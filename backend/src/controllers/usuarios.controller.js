@@ -98,6 +98,7 @@ async function iniciarSesion(req, res) {
         const token = jwt.sign(
             {
                 id: usuario.id,
+                nombre:usuario.nombre,
                 email: usuario.email
             },
             process.env.JWT_SECRET,
