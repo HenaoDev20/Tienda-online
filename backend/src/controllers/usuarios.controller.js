@@ -65,7 +65,7 @@ async function iniciarSesion(req, res) {
 
         // Buscar usuario por email
         const resultado = await pool.query(
-            `SELECT id, nombre, email, password
+            `SELECT id, nombre, email, password , rol
              FROM usuarios
              WHERE email = $1`,
             [email]
@@ -99,7 +99,8 @@ async function iniciarSesion(req, res) {
             {
                 id: usuario.id,
                 nombre:usuario.nombre,
-                email: usuario.email
+                email: usuario.email,
+                rol: usuario.rol
             },
             process.env.JWT_SECRET,
             {
@@ -114,7 +115,8 @@ async function iniciarSesion(req, res) {
             usuario: {
                 id: usuario.id,
                 nombre: usuario.nombre,
-                email: usuario.email
+                email: usuario.email,
+                rol: usuario.rol
             }
         });
 
