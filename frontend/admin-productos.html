@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Administrar productos</title>
+
+    <link rel="stylesheet" href="css/admin-productos.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Panel de administración</h1>
+
+        <p id="nombreAdministrador">
+            Bienvenido administrador
+        </p>
+
+        <button id="cerrarSesion">
+            Cerrar sesión
+        </button>
+    </header>
+
+
+    <main>
+
+        <h2>Productos</h2>
+
+       
+
+<form id="formProducto">
+
+    <input
+        type="text"
+        id="nombre"
+        placeholder="Nombre del producto"
+        required
+    >
+
+    <input
+        type="text"
+        id="marca"
+        placeholder="Marca"
+        required
+    >
+
+    <input
+        type="number"
+        id="precio"
+        placeholder="Precio"
+        required
+    >
+
+    <input
+        type="number"
+        id="cantidad"
+        placeholder="Cantidad"
+        required
+    >
+
+    <input
+        type="text"
+        id="imagen"
+        placeholder="URL de la imagen"
+        required
+    >
+
+    <button type="submit" id="btnGuardarProducto">
+        Guardar producto
+    </button>
+
+</form>
+        <section id="listaProductos">
+            <p>Cargando productos...</p>
+        </section>
+
+    </main>
+
+
+    <script src="js/admin-productos.js"></script>
+
+</body>
+
+</html>

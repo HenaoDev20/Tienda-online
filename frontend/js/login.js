@@ -58,7 +58,18 @@ loginForm.addEventListener("submit", async function (event) {
         );
 
         //Redirigir al perfil
-        window.location.href = "perfil.html";
+             if (datos.usuario.rol === "admin") {
+
+            // Administrador
+            window.location.href = "admin-productos.html";
+
+        } else {
+
+            // Usuario normal
+            window.location.href = "perfil.html";
+
+        }
+
 
         // Mostrar información en consola
         console.log("Sesión iniciada correctamente");
