@@ -20,9 +20,16 @@ const productosRoutes = require("./routes/productos.routes");
 const usuariosRoutes = require("./routes/usuarios.routes");
 
 
+// Rutas del dashboard
+
+const dashboardRoutes =
+    require("./routes/dashboard.routes");
+
+
 // Registrar rutas
 app.use("/productos", productosRoutes);
 app.use("/usuarios", usuariosRoutes);
+app.use("/dashboard", dashboardRoutes);
 
 
 module.exports = app;

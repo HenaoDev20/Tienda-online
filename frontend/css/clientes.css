@@ -1,0 +1,212 @@
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+    margin: 0;
+
+    background-color: #f2f2f2;
+
+    font-family: Arial, sans-serif;
+
+    color: #222;
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+header {
+
+    background-color: white;
+
+    padding: 20px 40px;
+
+    border-bottom: 1px solid #ddd;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+
+header h1 {
+
+    margin: 0 0 8px 0;
+
+    font-size: 24px;
+
+}
+
+
+header p {
+
+    margin: 0;
+
+    color: #666;
+
+}
+
+
+/* ==========================================
+   BOTONES DEL HEADER
+========================================== */
+
+header button {
+
+    padding: 10px 18px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background-color: #222;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+}
+
+
+header button:hover {
+
+    opacity: 0.85;
+
+}
+
+
+/* ==========================================
+   CONTENIDO PRINCIPAL
+========================================== */
+
+main {
+
+    max-width: 1000px;
+
+    margin: 0 auto;
+
+    padding: 40px;
+
+}
+
+
+main h2 {
+
+    margin-top: 0;
+
+    margin-bottom: 25px;
+
+    font-size: 28px;
+
+}
+
+
+/* ==========================================
+   LISTA DE CLIENTES
+========================================== */
+
+#listaClientes {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+
+}
+
+
+/* ==========================================
+   TARJETA CLIENTE
+========================================== */
+
+.cliente {
+
+    background-color: white;
+
+    padding: 20px 25px;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08);
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+
+.cliente h3 {
+
+    margin: 0;
+
+    font-size: 18px;
+
+}
+
+
+.cliente p {
+
+    margin: 0;
+
+    color: #555;
+
+}
+
+
+.cliente strong {
+
+    color: #222;
+
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 700px) {
+
+    header {
+
+        padding: 20px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+
+    }
+
+
+    main {
+
+        padding: 25px 20px;
+
+    }
+
+
+    .cliente {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 10px;
+
+    }
+
+}

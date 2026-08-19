@@ -1,0 +1,318 @@
+* {
+
+    box-sizing: border-box;
+
+}
+
+
+body {
+
+    margin: 0;
+
+    background-color: #f2f2f2;
+
+    font-family: Arial, sans-serif;
+
+    color: #222;
+
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.header-admin {
+
+    background-color: white;
+
+    padding: 20px 40px;
+
+    border-bottom: 1px solid #ddd;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+
+.header-admin h1 {
+
+    margin: 0 0 8px 0;
+
+    font-size: 24px;
+
+}
+
+
+.header-admin p {
+
+    margin: 0;
+
+    color: #666;
+
+}
+
+
+#cerrarSesion {
+
+    padding: 10px 18px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background-color: #222;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+}
+
+
+#cerrarSesion:hover {
+
+    opacity: 0.85;
+
+}
+
+
+/* ==========================================
+   CONTENEDOR
+========================================== */
+
+.contenedor {
+
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 40px;
+
+}
+
+
+.contenedor h2 {
+
+    margin-top: 0;
+
+    margin-bottom: 25px;
+
+    font-size: 28px;
+
+}
+
+
+/* ==========================================
+   ESTADÍSTICAS
+========================================== */
+
+.estadisticas {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 20px;
+
+    margin-bottom: 45px;
+
+}
+
+
+.tarjeta-estadistica {
+
+    background-color: white;
+
+    padding: 25px;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+}
+
+
+.icono-estadistica {
+
+    font-size: 40px;
+
+}
+
+
+.tarjeta-estadistica h3 {
+
+    margin: 0 0 5px 0;
+
+    font-size: 17px;
+
+    color: #666;
+
+}
+
+
+.numero-estadistica {
+
+    margin: 0;
+
+    font-size: 32px;
+
+    font-weight: bold;
+
+}
+
+
+/* ==========================================
+   TÍTULO GESTIÓN
+========================================== */
+
+.titulo-seccion {
+
+    margin-top: 0;
+
+}
+
+
+/* ==========================================
+   MENÚ ADMINISTRATIVO
+========================================== */
+
+.menu-admin {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 20px;
+
+}
+
+
+.opcion-admin {
+
+    background-color: white;
+
+    padding: 25px;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08);
+
+}
+
+
+.icono-opcion {
+
+    font-size: 35px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.opcion-admin h3 {
+
+    margin-top: 0;
+
+    margin-bottom: 10px;
+
+    font-size: 20px;
+
+}
+
+
+.opcion-admin p {
+
+    color: #666;
+
+    line-height: 1.5;
+
+    min-height: 45px;
+
+}
+
+
+.opcion-admin button {
+
+    margin-top: 10px;
+
+    padding: 11px 18px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background-color: #222;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+}
+
+
+.opcion-admin button:hover {
+
+    opacity: 0.85;
+
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 700px) {
+
+    .header-admin {
+
+        padding: 20px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+
+    }
+
+
+    .contenedor {
+
+        padding: 25px 20px;
+
+    }
+
+
+    .estadisticas {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .menu-admin {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}

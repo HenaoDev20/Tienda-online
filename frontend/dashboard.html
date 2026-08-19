@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dashboard administrativo</title>
+
+    <link
+        rel="stylesheet"
+        href="css/dashboard.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- ============================= -->
+    <!-- HEADER -->
+    <!-- ============================= -->
+
+    <header class="header-admin">
+
+        <div>
+
+            <h1>
+                Panel de administración
+            </h1>
+
+            <p id="nombreAdministrador">
+                Cargando administrador...
+            </p>
+
+        </div>
+
+
+        <button id="cerrarSesion">
+            Cerrar sesión
+        </button>
+
+    </header>
+
+
+    <!-- ============================= -->
+    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ============================= -->
+
+    <main class="contenedor">
+
+        <h2>
+            Dashboard
+        </h2>
+
+
+        <!-- ============================= -->
+        <!-- ESTADÍSTICAS -->
+        <!-- ============================= -->
+
+        <section class="estadisticas">
+
+
+            <!-- PRODUCTOS -->
+
+            <article class="tarjeta-estadistica">
+
+                <div class="icono-estadistica">
+                    📦
+                </div>
+
+                <div>
+
+                    <h3>
+                        Productos
+                    </h3>
+
+                    <p
+                        id="totalProductos"
+                        class="numero-estadistica"
+                    >
+                        0
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- USUARIOS -->
+
+            <article class="tarjeta-estadistica">
+
+                <div class="icono-estadistica">
+                    👥
+                </div>
+
+                <div>
+
+                    <h3>
+                        Usuarios
+                    </h3>
+
+                    <p
+                        id="totalUsuarios"
+                        class="numero-estadistica"
+                    >
+                        0
+                    </p>
+
+                </div>
+
+            </article>
+
+
+        </section>
+
+
+        <!-- ============================= -->
+        <!-- GESTIÓN -->
+        <!-- ============================= -->
+
+        <h2 class="titulo-seccion">
+            Gestión
+        </h2>
+
+
+        <section class="menu-admin">
+
+
+            <!-- PRODUCTOS -->
+
+            <article class="opcion-admin">
+
+                <div class="icono-opcion">
+                    📦
+                </div>
+
+                <h3>
+                    Productos
+                </h3>
+
+                <p>
+                    Crea, edita y elimina productos
+                    de la tienda.
+                </p>
+
+                <button id="btnProductos">
+                    Administrar productos
+                </button>
+
+            </article>
+
+
+            <!-- PEDIDOS -->
+
+            <article class="opcion-admin">
+
+                <div class="icono-opcion">
+                    🛒
+                </div>
+
+                <h3>
+                    Pedidos
+                </h3>
+
+                <p>
+                    Consulta y gestiona los pedidos
+                    realizados.
+                </p>
+
+                <button id="btnPedidos">
+                    Ver pedidos
+                </button>
+
+            </article>
+
+
+            <!-- CLIENTES -->
+
+            <article class="opcion-admin">
+
+                <div class="icono-opcion">
+                    👤
+                </div>
+
+                <h3>
+                    Clientes
+                </h3>
+
+                <p>
+                    Consulta los usuarios registrados
+                    en la tienda.
+                </p>
+
+                <button id="btnClientes">
+                    Ver clientes
+                </button>
+
+            </article>
+
+
+            <!-- PAGOS -->
+
+            <article class="opcion-admin">
+
+                <div class="icono-opcion">
+                    💳
+                </div>
+
+                <h3>
+                    Pagos
+                </h3>
+
+                <p>
+                    Consulta y gestiona los pagos
+                    realizados.
+                </p>
+
+                <button id="btnPagos">
+                    Ver pagos
+                </button>
+
+            </article>
+
+
+        </section>
+
+
+    </main>
+
+
+    <script src="js/dashboard.js"></script>
+
+</body>
+
+</html>

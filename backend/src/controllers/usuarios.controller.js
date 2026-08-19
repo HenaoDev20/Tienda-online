@@ -130,8 +130,39 @@ async function iniciarSesion(req, res) {
     }
 }
 
+//Obtener info de clientes
+async function obtenerClientes(req, res) {
+
+    try {
+
+        const resultado = await pool.query(
+            `SELECT nombre, email
+             FROM usuarios
+             ORDER BY id ASC`
+        );
+
+        res.status(200).json({
+            clientes: resultado.rows
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Error obteniendo clientes:",
+            error
+        );
+
+        res.status(500).json({
+            mensaje: "Error al obtener los clientes"
+        });
+
+    }
+
+}
+
 
 module.exports = {
     crearUsuario,
-    iniciarSesion
+    iniciarSesion,
+    obtenerClientes
 };

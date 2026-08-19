@@ -61,7 +61,7 @@ loginForm.addEventListener("submit", async function (event) {
              if (datos.usuario.rol === "admin") {
 
             // Administrador
-            window.location.href = "admin-productos.html";
+            window.location.href = "dashboard.html";
 
         } else {
 
