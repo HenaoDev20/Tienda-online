@@ -1,0 +1,221 @@
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background-color: #f2f2f2;
+
+    color: #222;
+
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+
+    background-color: white;
+
+    padding: 20px 50px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    border-bottom: 1px solid #ddd;
+
+}
+
+
+.logo h1 {
+
+    margin: 0;
+
+    font-size: 24px;
+
+}
+
+
+nav {
+
+    display: flex;
+
+    gap: 25px;
+
+}
+
+
+nav a {
+
+    text-decoration: none;
+
+    color: #222;
+
+    font-weight: bold;
+
+}
+
+
+nav a:hover {
+
+    color: #555;
+
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+main {
+
+    max-width: 1200px;
+
+    margin: auto;
+
+    padding: 40px 20px;
+
+}
+
+
+/* =========================
+   BIENVENIDA
+========================= */
+
+.bienvenida {
+
+    background-color: white;
+
+    padding: 50px;
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08);
+
+}
+
+
+.bienvenida h2 {
+
+    margin-top: 0;
+
+    font-size: 32px;
+
+}
+
+
+.bienvenida p {
+
+    color: #666;
+
+    font-size: 18px;
+
+}
+
+
+.bienvenida button {
+
+    margin-top: 20px;
+
+    padding: 12px 25px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background-color: #222;
+
+    color: white;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+}
+
+
+.bienvenida button:hover {
+
+    opacity: 0.85;
+
+}
+
+
+/* =========================
+   DESTACADOS
+========================= */
+
+.destacados {
+
+    margin-top: 40px;
+
+}
+
+
+.destacados h2 {
+
+    margin-bottom: 20px;
+
+}
+
+
+#productosDestacados {
+
+    background-color: white;
+
+    padding: 30px;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08);
+
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+
+    header {
+
+        flex-direction: column;
+
+        gap: 20px;
+
+        padding: 20px;
+
+    }
+
+
+    nav {
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+    }
+
+
+    .bienvenida {
+
+        padding: 30px 20px;
+
+    }
+
+}

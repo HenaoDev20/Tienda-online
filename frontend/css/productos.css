@@ -1,0 +1,233 @@
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background-color: #f2f2f2;
+
+    color: #222;
+
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+
+    background-color: white;
+
+    padding: 20px 50px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    border-bottom: 1px solid #ddd;
+
+}
+
+
+.logo h1 {
+
+    margin: 0;
+
+    font-size: 24px;
+
+}
+
+
+nav {
+
+    display: flex;
+
+    gap: 25px;
+
+}
+
+
+nav a {
+
+    text-decoration: none;
+
+    color: #222;
+
+    font-weight: bold;
+
+}
+
+
+nav a:hover {
+
+    color: #555;
+
+}
+
+
+/* =========================
+   CONTENIDO
+========================= */
+
+main {
+
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 40px 20px;
+
+}
+
+
+main h2 {
+
+    margin-top: 0;
+
+    margin-bottom: 30px;
+
+    font-size: 30px;
+
+}
+
+
+/* =========================
+   PRODUCTOS
+========================= */
+
+#listaProductos {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 25px;
+
+}
+
+
+/* =========================
+   TARJETA
+========================= */
+
+.producto {
+
+    background-color: white;
+
+    padding: 25px;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08);
+
+    transition:
+        transform 0.2s ease;
+
+}
+
+
+.producto:hover {
+
+    transform: translateY(-5px);
+
+}
+
+
+.producto h3 {
+
+    margin-top: 0;
+
+    margin-bottom: 15px;
+
+    font-size: 20px;
+
+}
+
+
+.producto p {
+
+    margin: 8px 0;
+
+    color: #555;
+
+}
+
+
+.producto strong {
+
+    color: #222;
+
+}
+
+
+/* =========================
+   PRECIO
+========================= */
+
+.producto p:nth-of-type(2) {
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    color: #222;
+
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    #listaProductos {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    header {
+
+        flex-direction: column;
+
+        gap: 20px;
+
+        padding: 20px;
+
+    }
+
+
+    nav {
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+    }
+
+
+    #listaProductos {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}

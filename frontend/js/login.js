@@ -66,7 +66,7 @@ loginForm.addEventListener("submit", async function (event) {
         } else {
 
             // Usuario normal
-            window.location.href = "perfil.html";
+            window.location.href = "inicio.html";
 
         }
 
