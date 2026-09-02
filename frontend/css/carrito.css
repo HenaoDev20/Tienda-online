@@ -1,0 +1,350 @@
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background-color: #f2f2f2;
+
+    color: #222;
+
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+
+    background-color: white;
+
+    padding: 20px 50px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    border-bottom: 1px solid #ddd;
+
+}
+
+
+.logo h1 {
+
+    margin: 0;
+
+    font-size: 24px;
+
+}
+
+
+nav {
+
+    display: flex;
+
+    gap: 25px;
+
+}
+
+
+nav a {
+
+    text-decoration: none;
+
+    color: #222;
+
+    font-weight: bold;
+
+}
+
+
+nav a:hover {
+
+    color: #555;
+
+}
+
+
+/* =========================
+   CONTENIDO
+========================= */
+
+main {
+
+    max-width: 1000px;
+
+    margin: 0 auto;
+
+    padding: 40px 20px;
+
+}
+
+
+main h2 {
+
+    margin-top: 0;
+
+    margin-bottom: 30px;
+
+    font-size: 30px;
+
+}
+
+
+/* =========================
+   LISTA DEL CARRITO
+========================= */
+
+#listaCarrito {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+
+}
+
+
+/* =========================
+   PRODUCTO DEL CARRITO
+========================= */
+
+.producto-carrito {
+
+    background-color: white;
+
+    padding: 25px;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08);
+
+}
+
+
+.producto-carrito h3 {
+
+    margin-top: 0;
+
+    margin-bottom: 15px;
+
+    font-size: 20px;
+
+}
+
+
+.producto-carrito p {
+
+    margin: 8px 0;
+
+    color: #555;
+
+}
+
+
+.producto-carrito strong {
+
+    color: #222;
+
+}
+
+
+/* =========================
+   CANTIDAD
+========================= */
+
+.cantidad {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin: 15px 0;
+
+}
+
+
+.cantidad span {
+
+    min-width: 30px;
+
+    text-align: center;
+
+    font-weight: bold;
+
+    font-size: 16px;
+
+}
+
+
+/* =========================
+   BOTONES + Y -
+========================= */
+
+.cantidad button {
+
+    width: 32px;
+
+    height: 32px;
+
+    border: 1px solid #ccc;
+
+    background-color: #f5f5f5;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    font-size: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.cantidad button:hover {
+
+    background-color: #e5e5e5;
+
+}
+
+
+/* =========================
+   SUBTOTAL
+========================= */
+
+.producto-carrito p:last-of-type {
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: #222;
+
+}
+
+
+/* =========================
+   BOTÓN ELIMINAR
+========================= */
+
+.btn-eliminar {
+
+    margin-top: 10px;
+
+    padding: 10px 15px;
+
+    border: none;
+
+    border-radius: 5px;
+
+    background-color: #222;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+}
+
+
+.btn-eliminar:hover {
+
+    background-color: #444;
+
+}
+
+
+/* =========================
+   RESUMEN
+========================= */
+
+#resumenCarrito {
+
+    background-color: white;
+
+    margin-top: 30px;
+
+    padding: 25px;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08);
+
+}
+
+
+#resumenCarrito h3 {
+
+    margin-top: 0;
+
+    margin-bottom: 15px;
+
+}
+
+
+#totalCarrito {
+
+    font-size: 20px;
+
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 600px) {
+
+    header {
+
+        flex-direction: column;
+
+        gap: 20px;
+
+        padding: 20px;
+
+    }
+
+
+    nav {
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+    }
+
+
+    main {
+
+        padding: 30px 15px;
+
+    }
+
+
+    .producto-carrito {
+
+        padding: 20px;
+
+    }
+
+}

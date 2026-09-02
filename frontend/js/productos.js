@@ -124,6 +124,14 @@ async function obtenerProductos() {
                     ${producto.cantidad}
                 </p>
 
+                
+
+                <button
+                    onclick="agregarAlCarrito(${producto.id})"
+                >
+                    Agregar al carrito
+                </button>
+
             `;
 
 
@@ -175,6 +183,45 @@ document.getElementById(
 
     }
 );
+
+// Agregar producto al carrito
+function agregarAlCarrito(id) {
+
+    let carrito = JSON.parse(
+        localStorage.getItem("carrito")
+    ) || [];
+
+
+    const productoExistente =
+        carrito.find(producto => producto.id === id);
+
+
+    if (productoExistente) {
+
+        productoExistente.cantidad++;
+
+    } else {
+
+        carrito.push({
+            id: id,
+            cantidad: 1
+        });
+
+    }
+
+
+    localStorage.setItem(
+        "carrito",
+        JSON.stringify(carrito)
+    );
+
+
+    console.log(
+        "Carrito actual:",
+        carrito
+    );
+
+}
 
 
 // Ejecutar
