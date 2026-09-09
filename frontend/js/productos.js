@@ -223,6 +223,12 @@ function agregarAlCarrito(id) {
 
 }
 
+// =========================
+// IR AL CARRITO
+// =========================
+
+
+
 
 // Ejecutar
 obtenerProductos();

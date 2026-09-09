@@ -346,5 +346,38 @@ main h2 {
         padding: 20px;
 
     }
+/* =========================
+   FINALIZAR COMPRA
+========================= */
+
+#btnFinalizarCompra {
+
+    margin-top: 20px;
+
+    padding: 12px 20px;
+
+    border: none;
+
+    border-radius: 5px;
+
+    background-color: #222;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    font-weight: bold;
 
 }
+
+
+#btnFinalizarCompra:hover {
+
+    background-color: #444;
+
+}
+    
+}
+

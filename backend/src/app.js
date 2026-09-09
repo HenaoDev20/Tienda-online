@@ -26,10 +26,15 @@ const dashboardRoutes =
     require("./routes/dashboard.routes");
 
 
+// Rutas de pedidos
+const pedidosRoutes =
+    require("./routes/pedidos.routes");
+
 // Registrar rutas
 app.use("/productos", productosRoutes);
 app.use("/usuarios", usuariosRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/pedidos", pedidosRoutes);
 
 
 module.exports = app;

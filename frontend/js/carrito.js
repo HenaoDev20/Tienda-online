@@ -361,7 +361,7 @@ function activarBotones() {
 // AUMENTAR CANTIDAD
 // =========================
 
-function aumentarCantidad(id) {
+async function aumentarCantidad(id) {
 
     const producto =
         carrito.find(
@@ -376,10 +376,75 @@ function aumentarCantidad(id) {
     }
 
 
-    producto.cantidad++;
+    try {
+
+        // Consultar producto en el backend
+        const respuesta = await fetch(
+            `http://localhost:3000/productos/${id}`,
+            {
+                method: "GET",
+
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
 
 
-    guardarCarrito();
+        const resultado =
+            await respuesta.json();
+
+
+        // Verificar respuesta
+        if (!respuesta.ok) {
+
+            throw new Error(
+                resultado.mensaje ||
+                "No se pudo consultar el producto"
+            );
+
+        }
+
+
+        // Producto obtenido desde PostgreSQL
+        const productoBD =
+            resultado.producto;
+
+
+        // =========================
+        // VERIFICAR STOCK
+        // =========================
+
+        if (
+            producto.cantidad >=
+            Number(productoBD.cantidad)
+        ) {
+
+            alert(
+                "No hay más unidades disponibles."
+            );
+
+            return;
+
+        }
+
+
+        // Aumentar cantidad
+        producto.cantidad++;
+
+
+        // Guardar carrito
+        guardarCarrito();
+
+
+    } catch (error) {
+
+        console.error(
+            "Error verificando stock:",
+            error
+        );
+
+    }
 
 }
 
@@ -459,6 +524,150 @@ function guardarCarrito() {
 
 
 // =========================
+// FINALIZAR COMPRA
+// =========================
+
+async function finalizarCompra() {
+
+    // Verificar que haya productos
+    if (carrito.length === 0) {
+
+        alert(
+            "El carrito está vacío."
+        );
+
+        return;
+
+    }
+
+
+    const boton =
+        document.getElementById(
+            "btnFinalizarCompra"
+        );
+
+
+    try {
+
+        // Deshabilitar botón
+        boton.disabled = true;
+
+        boton.textContent =
+            "Procesando compra...";
+
+
+        // =========================
+        // ENVIAR PEDIDO
+        // =========================
+
+        const respuesta = await fetch(
+            "http://localhost:3000/pedidos",
+            {
+
+                method: "POST",
+
+                headers: {
+
+                    "Authorization":
+                        `Bearer ${token}`,
+
+                    "Content-Type":
+                        "application/json"
+
+                },
+
+                body: JSON.stringify({
+
+                    carrito: carrito
+
+                })
+
+            }
+        );
+
+
+        const resultado =
+            await respuesta.json();
+
+
+        // =========================
+        // VERIFICAR RESPUESTA
+        // =========================
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                resultado.mensaje ||
+                "No se pudo crear el pedido"
+            );
+
+        }
+
+
+        // =========================
+        // PEDIDO CREADO
+        // =========================
+
+        console.log(
+            "Pedido creado:",
+            resultado
+        );
+
+
+        alert(
+            `Compra realizada correctamente.\n\n` +
+            `Número de pedido: ${resultado.pedido.id}\n` +
+            `Total: $${resultado.pedido.total}`
+        );
+
+
+        // =========================
+        // VACIAR CARRITO
+        // =========================
+
+        carrito = [];
+
+
+        localStorage.removeItem(
+            "carrito"
+        );
+
+
+        // =========================
+        // ACTUALIZAR VISTA
+        // =========================
+
+        obtenerProductosCarrito();
+
+
+    } catch (error) {
+
+        console.error(
+            "Error finalizando compra:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Ocurrió un error al realizar la compra."
+        );
+
+
+    } finally {
+
+        // Volver a habilitar botón
+        boton.disabled = false;
+
+        boton.textContent =
+            "Finalizar compra";
+
+    }
+
+}
+
+
+// =========================
 // CERRAR SESIÓN
 // =========================
 
@@ -481,6 +690,26 @@ document.getElementById(
 
     }
 );
+
+
+// =========================
+// BOTÓN FINALIZAR COMPRA
+// =========================
+
+const botonFinalizarCompra =
+    document.getElementById(
+        "btnFinalizarCompra"
+    );
+
+
+if (botonFinalizarCompra) {
+
+    botonFinalizarCompra.addEventListener(
+        "click",
+        finalizarCompra
+    );
+
+}
 
 
 // =========================
