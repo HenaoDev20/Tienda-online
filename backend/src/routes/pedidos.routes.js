@@ -4,7 +4,9 @@ const router = express.Router();
 
 
 const {
-    crearPedido
+    crearPedido,
+    obtenerMisPedidos,
+    obtenerPedidoPorId
 } = require("../controllers/pedidos.controller");
 
 
@@ -20,6 +22,20 @@ router.post(
     "/",
     verificarToken,
     crearPedido
+);
+
+// OBTENER MIS PEDIDOS
+router.get(
+    "/mis-pedidos",
+    verificarToken,
+    obtenerMisPedidos
+);
+
+// OBTENER PEDIDO POR ID
+router.get(
+    "/:id",
+    verificarToken,
+    obtenerPedidoPorId
 );
 
 

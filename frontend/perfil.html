@@ -2,12 +2,21 @@
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Mi perfil - Tienda Online</title>
 
-    <link rel="stylesheet" href="./css/estilos.css">
+    <link
+        rel="stylesheet"
+        href="./css/estilos.css"
+    >
+
 </head>
 
 <body>
@@ -16,7 +25,13 @@
 
         <section class="login-card">
 
-            <h1>Mi perfil</h1>
+            <!-- =========================
+                 INFORMACIÓN DEL USUARIO
+            ========================== -->
+
+            <h1>
+                Mi perfil
+            </h1>
 
             <p class="subtitulo">
                 Información de tu cuenta
@@ -34,7 +49,36 @@
 
             </div>
 
+
+            <!-- =========================
+                 MIS PEDIDOS
+            ========================== -->
+
+            <hr>
+
+            <h2>
+                Mis pedidos
+            </h2>
+
+            <section id="listaPedidos">
+
+                <p>
+                    Cargando pedidos...
+                </p>
+
+            </section>
+
+
+            <!-- =========================
+                 MENSAJE
+            ========================== -->
+
             <p id="mensaje"></p>
+
+
+            <!-- =========================
+                 CERRAR SESIÓN
+            ========================== -->
 
             <button id="cerrarSesion">
                 Cerrar sesión
@@ -44,7 +88,14 @@
 
     </main>
 
+
+    <!-- =========================
+         SCRIPTS
+    ========================== -->
+
     <script src="./js/perfil.js"></script>
+
+    <script src="./js/pedidos.js"></script>
 
 </body>
 

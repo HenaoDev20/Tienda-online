@@ -101,3 +101,34 @@ button:hover {
     color: #222;
     font-weight: bold;
 }
+
+/* =========================
+   MIS PEDIDOS
+========================= */
+
+#listaPedidos {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.pedido {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.pedido h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.pedido p {
+    margin: 8px 0;
+}
+
+.pedido strong {
+    color: #222;
+}

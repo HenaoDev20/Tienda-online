@@ -329,7 +329,182 @@ async function crearPedido(req, res) {
     }
 
 }
+// Cambios 17/09/26
+// =========================
+// OBTENER MIS PEDIDOS
+// =========================
 
+async function obtenerMisPedidos(req, res) {
+
+   
+
+    try {
+
+        // =========================
+        // USUARIO AUTENTICADO
+        // =========================
+
+        const usuarioId = req.usuario.id;
+
+
+        // =========================
+        // CONSULTAR PEDIDOS
+        // =========================
+
+        const resultado = await pool.query(
+
+            `SELECT id, fecha, total, estado
+             FROM pedidos
+             WHERE usuario_id = $1
+             ORDER BY fecha DESC`,
+
+            [usuarioId]
+
+        );
+
+
+        // =========================
+        // RESPUESTA
+        // =========================
+
+        res.status(200).json({
+
+            pedidos: resultado.rows
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Error obteniendo pedidos:",
+            error
+        );
+
+
+        res.status(500).json({
+
+            mensaje:
+                "Error al obtener los pedidos"
+
+        });
+
+    }
+
+}
+
+// =========================
+// OBTENER PEDIDO POR ID
+// =========================
+
+async function obtenerPedidoPorId(req, res) {
+
+    try {
+
+        // =========================
+        // OBTENER DATOS
+        // =========================
+
+        const usuarioId = req.usuario.id;
+        const { id } = req.params;
+
+
+        // =========================
+        // OBTENER PEDIDO
+        // =========================
+
+        const resultadoPedido = await pool.query(
+
+            `SELECT id, fecha, total, estado
+             FROM pedidos
+             WHERE id = $1
+             AND usuario_id = $2`,
+
+            [
+                id,
+                usuarioId
+            ]
+
+        );
+
+
+        // =========================
+        // VERIFICAR PEDIDO
+        // =========================
+
+        if (resultadoPedido.rows.length === 0) {
+
+            return res.status(404).json({
+
+                mensaje:
+                    "Pedido no encontrado"
+
+            });
+
+        }
+
+
+        const pedido =
+            resultadoPedido.rows[0];
+
+
+        // =========================
+        // OBTENER DETALLES
+        // =========================
+
+        const resultadoDetalles = await pool.query(
+
+            `SELECT
+                dp.producto_id,
+                p.nombre,
+                dp.cantidad,
+                dp.precio,
+                dp.subtotal
+             FROM detalle_pedido dp
+             INNER JOIN productos p
+                ON dp.producto_id = p.id
+             WHERE dp.pedido_id = $1
+             ORDER BY dp.id ASC`,
+
+            [
+                id
+            ]
+
+        );
+
+
+        // =========================
+        // RESPUESTA
+        // =========================
+
+        res.status(200).json({
+
+            pedido: pedido,
+
+            detalles:
+                resultadoDetalles.rows
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Error obteniendo pedido:",
+            error
+        );
+
+
+        res.status(500).json({
+
+            mensaje:
+                "Error al obtener el pedido"
+
+        });
+
+    }
+
+}
 
 // =========================
 // EXPORTAR
@@ -337,6 +512,8 @@ async function crearPedido(req, res) {
 
 module.exports = {
 
-    crearPedido
+    crearPedido,
+    obtenerMisPedidos,
+    obtenerPedidoPorId
 
 };
