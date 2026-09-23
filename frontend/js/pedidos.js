@@ -10,6 +10,31 @@ if (!tokenPedidos) {
     window.location.href = "index.html";
 }
 
+function formatearPrecio(valor) {
+
+    return Number(valor).toLocaleString(
+        "es-CO",
+        {
+            style: "currency",
+            currency: "COP",
+            minimumFractionDigits: 0
+        }
+    );
+
+}
+
+function formatearFecha(fecha) {
+
+    return new Date(fecha).toLocaleString(
+        "es-CO",
+        {
+            dateStyle: "short",
+            timeStyle: "short"
+        }
+    );
+
+}
+
 
 // =========================
 // OBTENER MIS PEDIDOS
@@ -108,14 +133,14 @@ async function obtenerMisPedidos() {
                     <strong>
                         Fecha:
                     </strong>
-                    ${pedido.fecha}
+                    ${formatearFecha(pedido.fecha)}
                 </p>
 
                 <p>
                     <strong>
                         Total:
                     </strong>
-                    $${pedido.total}
+                    ${formatearPrecio(pedido.total)}
                 </p>
 
                 <p>
@@ -124,6 +149,8 @@ async function obtenerMisPedidos() {
                     </strong>
                     ${pedido.estado}
                 </p>
+
+               
             `;
 
 
@@ -154,6 +181,9 @@ async function obtenerMisPedidos() {
     }
 
 }
+
+
+
 
 
 // =========================
