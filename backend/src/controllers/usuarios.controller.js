@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const pool = require("../config/database");
+const crypto = require("crypto");
 
 async function crearUsuario(req, res) {
 
@@ -130,6 +131,112 @@ async function iniciarSesion(req, res) {
     }
 }
 
+//Solicitud de recuperación de contraseña
+async function solicitarRecuperacion(req, res) {
+
+    try {
+
+        const { email } = req.body;
+
+        // Validar que se haya enviado el correo
+        if (!email) {
+            return res.status(400).json({
+                mensaje:
+                    "El correo electrónico es obligatorio"
+            });
+        }
+
+        // Buscar usuario por email
+        const resultado = await pool.query(
+            `SELECT id, nombre, email
+             FROM usuarios
+             WHERE email = $1`,
+            [email]
+        );
+
+        // Respuesta genérica si el usuario no existe
+        if (resultado.rows.length === 0) {
+
+            return res.status(200).json({
+                mensaje:
+                    "Si existe una cuenta asociada a este correo, recibirás instrucciones para recuperar tu contraseña."
+            });
+        }
+
+        const usuario = resultado.rows[0];
+
+        // ==================================
+        // GENERAR TOKEN
+        // ==================================
+
+        const token =
+            crypto.randomBytes(32).toString("hex");
+
+        // ==================================
+        // CREAR HASH DEL TOKEN
+        // ==================================
+
+        const tokenHash =
+            crypto
+                .createHash("sha256")
+                .update(token)
+                .digest("hex");
+
+        // ==================================
+        // EXPIRACIÓN
+        // ==================================
+
+        const expiracion =
+            new Date(Date.now() + 15 * 60 * 1000);
+
+        // ==================================
+        // GUARDAR RECUPERACIÓN
+        // ==================================
+
+        await pool.query(
+            `INSERT INTO recuperaciones_password
+             (usuario_id, token_hash, expira_en)
+             VALUES ($1, $2, $3)`,
+            [
+                usuario.id,
+                tokenHash,
+                expiracion
+            ]
+        );
+
+        console.log(
+            "Token generado:",
+            token
+        );
+
+        console.log(
+            "Token válido hasta:",
+            expiracion
+        );
+
+        // ==================================
+        // RESPUESTA
+        // ==================================
+
+        res.status(200).json({
+            mensaje:
+                "Si existe una cuenta asociada a este correo, recibirás instrucciones para recuperar tu contraseña."
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Error solicitando recuperación:",
+            error
+        );
+
+        res.status(500).json({
+            mensaje:
+                "No se pudo procesar la solicitud"
+        });
+    }
+}
+
 //Obtener info de clientes
 async function obtenerClientes(req, res) {
 
@@ -164,5 +271,6 @@ async function obtenerClientes(req, res) {
 module.exports = {
     crearUsuario,
     iniciarSesion,
-    obtenerClientes
+    obtenerClientes,
+    solicitarRecuperacion
 };

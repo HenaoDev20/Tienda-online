@@ -4,6 +4,7 @@ const cors = require("cors");
 const app = express();
 
 
+
 // Permitir peticiones desde el frontend
 app.use(cors());
 
@@ -30,11 +31,21 @@ const dashboardRoutes =
 const pedidosRoutes =
     require("./routes/pedidos.routes");
 
+// Rutas de recuperación de contraseña
+const recuperacionRoutes =
+         require("./routes/recuperacion.routes");
+
 // Registrar rutas
 app.use("/productos", productosRoutes);
 app.use("/usuarios", usuariosRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/pedidos", pedidosRoutes);
+app.use("/recuperacion", recuperacionRoutes);
 
+app.get("/prueba", (req, res) => {
+    res.json({
+        mensaje: "El servidor funciona correctamente"
+    });
+});
 
 module.exports = app;
