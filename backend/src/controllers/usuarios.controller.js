@@ -3,6 +3,10 @@ const jwt = require("jsonwebtoken");
 const pool = require("../config/database");
 const crypto = require("crypto");
 
+const {
+    enviarCorreoRecuperacion
+} = require("../services/email.service");
+
 async function crearUsuario(req, res) {
 
     try {
@@ -140,10 +144,12 @@ async function solicitarRecuperacion(req, res) {
 
         // Validar que se haya enviado el correo
         if (!email) {
+
             return res.status(400).json({
                 mensaje:
                     "El correo electrónico es obligatorio"
             });
+
         }
 
         // Buscar usuario por email
@@ -161,9 +167,11 @@ async function solicitarRecuperacion(req, res) {
                 mensaje:
                     "Si existe una cuenta asociada a este correo, recibirás instrucciones para recuperar tu contraseña."
             });
+
         }
 
         const usuario = resultado.rows[0];
+
 
         // ==================================
         // GENERAR TOKEN
@@ -171,6 +179,7 @@ async function solicitarRecuperacion(req, res) {
 
         const token =
             crypto.randomBytes(32).toString("hex");
+
 
         // ==================================
         // CREAR HASH DEL TOKEN
@@ -182,12 +191,17 @@ async function solicitarRecuperacion(req, res) {
                 .update(token)
                 .digest("hex");
 
+
         // ==================================
-        // EXPIRACIÓN
+        // ESTABLECER EXPIRACIÓN
+        // 15 MINUTOS
         // ==================================
 
         const expiracion =
-            new Date(Date.now() + 15 * 60 * 1000);
+            new Date(
+                Date.now() + 15 * 60 * 1000
+            );
+
 
         // ==================================
         // GUARDAR RECUPERACIÓN
@@ -204,23 +218,42 @@ async function solicitarRecuperacion(req, res) {
             ]
         );
 
+
+        // ==================================
+        // CREAR ENLACE DE RECUPERACIÓN
+        // ==================================
+
+        const enlaceRecuperacion =
+            `http://localhost:5500/frontend/nueva-password.html?token=${token}`;
+
+
+        // Mostrar temporalmente el enlace
+        // para comprobar que se está generando correctamente
         console.log(
-            "Token generado:",
-            token
+            "Enlace de recuperación:",
+            enlaceRecuperacion
         );
 
-        console.log(
-            "Token válido hasta:",
-            expiracion
+
+        // ==================================
+        // ENVIAR CORREO
+        // ==================================
+
+        await enviarCorreoRecuperacion(
+            usuario.email,
+            enlaceRecuperacion
         );
+
 
         // ==================================
         // RESPUESTA
         // ==================================
 
         res.status(200).json({
+
             mensaje:
                 "Si existe una cuenta asociada a este correo, recibirás instrucciones para recuperar tu contraseña."
+
         });
 
     } catch (error) {
@@ -234,6 +267,7 @@ async function solicitarRecuperacion(req, res) {
             mensaje:
                 "No se pudo procesar la solicitud"
         });
+
     }
 }
 
