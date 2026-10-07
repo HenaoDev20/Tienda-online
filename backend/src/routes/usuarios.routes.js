@@ -5,7 +5,8 @@ const router = express.Router();
 const {
     crearUsuario,
     iniciarSesion,
-    obtenerClientes
+    obtenerClientes,
+    restablecerPassword
 } = require("../controllers/usuarios.controller");
 
 const verificarToken = require("../middleware/auth.middleware");
@@ -18,6 +19,9 @@ router.post("/", crearUsuario);
 
 // Iniciar sesión
 router.post("/login", iniciarSesion);
+
+// Restablecer contraseña
+router.post("/restablecer-password", restablecerPassword);
 
 // Obtener perfil
 router.get("/perfil", verificarToken, (req, res) => {
@@ -38,6 +42,8 @@ router.get(
     verificarAdmin,
     obtenerClientes
 );
+
+
 
 
 module.exports = router;

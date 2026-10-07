@@ -8,8 +8,8 @@ Aplicación web de comercio electrónico construida con un **frontend en HTML/CS
 
 | Capa          | Tecnologías                                                              |
 | ------------- | ------------------------------------------------------------------------ |
-| **Backend**   | Node.js, Express 5, JSON Web Token (JWT), bcrypt, PostgreSQL (node-postgres) |
-| **Frontend**  | HTML5, CSS3, JavaScript (vanilla / Fetch API)                            |
+| **Backend**   | Node.js, Express 5, JSON Web Token (JWT), bcrypt, PostgreSQL (node-postgres), Nodemailer |
+| **Frontend**  | HTML, CSS, JavaScript (vanilla / Fetch API)                            |
 | **Herramientas de desarrollo** | Nodemon, dotenv, CORS                                        |
 
 ---
@@ -21,6 +21,14 @@ Aplicación web de comercio electrónico construida con un **frontend en HTML/CS
 - Inicio de sesión con generación de **token JWT** (expiración de 1 hora).
 - Redirección automática según el **rol** del usuario (`admin` → panel de administración, `usuario` → inicio).
 - Perfil de usuario que muestra nombre, email y el historial de pedidos.
+
+### Recuperación de contraseña
+- Flujo completo de "¿Olvidaste tu contraseña?" desde el login hasta el cambio efectivo.
+- Al solicitar la recuperación se envía un **correo electrónico** (Nodemailer / Gmail) con un enlace único.
+- El token se genera con `crypto.randomBytes(32)` y se almacena **hasheado con SHA-256** (nunca en texto plano).
+- El enlace **expira en 15 minutos** y es de **uso único** (se marca como usado tras el cambio).
+- Restablecimiento protegido con **transacción SQL** (`BEGIN` / `COMMIT` / `ROLLBACK`) y validación de longitud mínima de la nueva contraseña.
+- Respuesta genérica ante correos no registrados para no revelar qué cuentas existen.
 
 ### Control de roles
 - Middleware de autenticación (`verificarToken`) que protege todas las rutas privadas.
@@ -37,7 +45,8 @@ Aplicación web de comercio electrónico construida con un **frontend en HTML/CS
 
 ### Pedidos
 - Creación de pedidos con **transacciones SQL** (verificación de existencia, stock, cálculos de subtotal/total y actualización de inventario).
-- Historial "Mis pedidos" para el usuario autenticado.
+- Historial "Mis pedidos" para el usuario autenticado, con **formato de precios en COP** y **fechas en formato local (`es-CO`)**.
+- El historial se carga de forma independiente en la vista de perfil mediante `js/pedidos.js`.
 - Consulta de un pedido con sus detalle individuales.
 
 ### Dashboard administrativo
@@ -54,6 +63,7 @@ Tienda_Online/
 │   ├── src/
 │   │   ├── app.js               # Configuración de Express, CORS y rutas
 │   │   ├── server.js            # Punto de entrada (puerto 3000)
+│   │   ├── test-email.js        # Script de prueba del envío de correos
 │   │   ├── config/
 │   │   │   └── database.js      # Pool de conexión a PostgreSQL
 │   │   ├── controllers/         # Lógica de negocio
@@ -64,10 +74,13 @@ Tienda_Online/
 │   │   ├── middleware/
 │   │   │   ├── auth.middleware.js   # Verificación de token JWT
 │   │   │   └── role.middleware.js   # Verificación de rol admin
+│   │   ├── services/
+│   │   │   └── email.service.js     # Envío de correos con Nodemailer
 │   │   └── routes/
 │   │       ├── dashboard.routes.js
 │   │       ├── pedidos.routes.js
 │   │       ├── productos.routes.js
+│   │       ├── recuperacion.routes.js   # Solicitud de recuperación
 │   │       └── usuarios.routes.js
 │   └── package.json
 │
@@ -82,12 +95,18 @@ Tienda_Online/
 ## API REST (endpoints)
 
 ### Autenticación y usuarios — `/usuarios`
-| Método | Ruta           | Acceso | Descripción                                    |
-| ------ | -------------- | ------ | ---------------------------------------------- |
-| POST   | `/`            | Público | Registrar un nuevo usuario                     |
-| POST   | `/login`       | Público | Iniciar sesión y obtener un token JWT          |
-| GET    | `/perfil`      | Usuario | Obtener los datos del usuario autenticado      |
-| GET    | `/clientes`    | Admin   | Listar los clientes registrados                |
+| Método | Ruta                     | Acceso  | Descripción                                    |
+| ------ | ------------------------ | ------- | ---------------------------------------------- |
+| POST   | `/`                      | Público | Registrar un nuevo usuario                     |
+| POST   | `/login`                 | Público | Iniciar sesión y obtener un token JWT          |
+| POST   | `/restablecer-password`  | Público | Restablecer la contraseña con el token recibido |
+| GET    | `/perfil`                | Usuario | Obtener los datos del usuario autenticado      |
+| GET    | `/clientes`              | Admin   | Listar los clientes registrados                |
+
+### Recuperación de contraseña — `/recuperacion`
+| Método | Ruta | Acceso  | Descripción                                                        |
+| ------ | ---- | ------- | ------------------------------------------------------------------ |
+| POST   | `/`  | Público | Solicitar el enlace de recuperación (se envía por correo)          |
 
 ### Productos — `/productos`
 | Método | Ruta        | Acceso | Descripción                     |
@@ -122,6 +141,7 @@ Las tablas utilizadas por el backend son las siguientes:
 - **productos**: `id`, `nombre`, `marca`, `precio`, `cantidad` (stock), `imagen`.
 - **pedidos**: `id`, `usuario_id`, `fecha`, `total`, `estado`.
 - **detalle_pedido**: `id`, `pedido_id`, `producto_id`, `cantidad`, `precio`, `subtotal`.
+- **recuperaciones_password**: `id`, `usuario_id`, `token_hash` (SHA-256), `expira_en`, `usado`.
 
 ---
 
@@ -142,7 +162,11 @@ DB_NAME=tienda_online
 DB_USER=tu_usuario
 DB_PASSWORD=tu_password
 JWT_SECRET=tu_clave_secreta
+EMAIL_USER=tu_correo@gmail.com
+EMAIL_PASSWORD=tu_password_de_aplicacion
 ```
+
+> `EMAIL_USER` y `EMAIL_PASSWORD` son necesarios para el envío de los correos de recuperación. En Gmail debes usar una **contraseña de aplicación** generada desde la cuenta (no la contraseña normal).
 
 ### 3. Instalar dependencias
 
@@ -173,8 +197,10 @@ Sirve la carpeta `frontend/` desde un servidor estático (o ábrela directamente
 
 | Vista               | Ruta                  | Descripción                                     |
 | ------------------- | --------------------- | ----------------------------------------------- |
-| Iniciar sesión      | `index.html`          | Login con redirección según rol                 |
+| Iniciar sesión      | `index.html`          | Login con redirección según rol y enlace de recuperación |
 | Crear cuenta        | `registro.html`       | Registro de nuevos usuarios                     |
+| Recuperar contraseña | `recuperar-password.html` | Solicita el enlace de recuperación por correo |
+| Nueva contraseña    | `nueva-password.html` | Define la nueva contraseña usando el token del enlace |
 | Inicio              | `inicio.html`         | Página principal del cliente cuenta iniciada    |
 | Productos           | `productos.html`      | Catálogo de productos con agregar al carrito    |
 | Carrito             | `carrito.html`        | Carrito de compras y finalización de pedido     |
@@ -190,16 +216,17 @@ Sirve la carpeta `frontend/` desde un servidor estático (o ábrela directamente
 **Implementado:**
 - [x] Módulo de autenticación con JWT.
 - [x] Control de roles (usuario / admin).
+- [x] Recuperación de contraseña por correo (token con hash SHA-256, expiración de 15 min y uso único).
 - [x] CRUD de productos.
 - [x] Carrito de compras.
 - [x] Creación de pedidos con transacciones y descuento de stock.
-- [x] Historial de pedidos por usuario.
+- [x] Historial de pedidos por usuario (precios en COP y fechas `es-CO`).
 - [x] Perfil de usuario.
 - [x] Dashboard con estadísticas.
 - [x] Listado de clientes.
+- [x] Vista del lado del cliente de productos.
 
 **En desarrollo / pendiente:**
 - [ ] Módulo de pedidos para administración (gestión de estados).
 - [ ] Módulo de pagos.
 - [ ] Sección de productos destacados en el inicio.
-- [ ] Vista del lado del cliente de productos.

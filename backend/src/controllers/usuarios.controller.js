@@ -227,13 +227,6 @@ async function solicitarRecuperacion(req, res) {
             `http://localhost:5500/frontend/nueva-password.html?token=${token}`;
 
 
-        // Mostrar temporalmente el enlace
-        // para comprobar que se está generando correctamente
-        console.log(
-            "Enlace de recuperación:",
-            enlaceRecuperacion
-        );
-
 
         // ==================================
         // ENVIAR CORREO
@@ -271,6 +264,207 @@ async function solicitarRecuperacion(req, res) {
     }
 }
 
+// Restablecer contraseña
+async function restablecerPassword(req, res) {
+
+    const client = await pool.connect();
+
+    try {
+
+        const { token, password } = req.body;
+
+
+        // ==================================
+        // VALIDAR DATOS
+        // ==================================
+
+        if (!token || !password) {
+
+            return res.status(400).json({
+                mensaje:
+                    "El token y la nueva contraseña son obligatorios"
+            });
+
+        }
+
+
+        // ==================================
+        // VALIDAR CONTRASEÑA
+        // ==================================
+
+        if (password.length < 8) {
+
+            return res.status(400).json({
+                mensaje:
+                    "La contraseña debe tener al menos 8 caracteres"
+            });
+
+        }
+
+
+        // ==================================
+        // GENERAR HASH DEL TOKEN
+        // ==================================
+
+        const tokenHash =
+            crypto
+                .createHash("sha256")
+                .update(token)
+                .digest("hex");
+
+
+        // ==================================
+        // BUSCAR RECUPERACIÓN
+        // ==================================
+
+        const resultado = await client.query(
+            `SELECT id, usuario_id, expira_en, usado
+             FROM recuperaciones_password
+             WHERE token_hash = $1`,
+            [tokenHash]
+        );
+
+
+        // ==================================
+        // VERIFICAR TOKEN
+        // ==================================
+
+        if (resultado.rows.length === 0) {
+
+            return res.status(400).json({
+                mensaje:
+                    "El enlace de recuperación no es válido"
+            });
+
+        }
+
+
+        const recuperacion = resultado.rows[0];
+
+
+        // ==================================
+        // VERIFICAR SI YA FUE USADO
+        // ==================================
+
+        if (recuperacion.usado) {
+
+            return res.status(400).json({
+                mensaje:
+                    "Este enlace de recuperación ya fue utilizado"
+            });
+
+        }
+
+
+        // ==================================
+        // VERIFICAR EXPIRACIÓN
+        // ==================================
+
+        if (
+            new Date() >
+            new Date(recuperacion.expira_en)
+        ) {
+
+            return res.status(400).json({
+                mensaje:
+                    "El enlace de recuperación ha expirado"
+            });
+
+        }
+
+
+        // ==================================
+        // GENERAR HASH DE CONTRASEÑA
+        // ==================================
+
+        const passwordHash =
+            await bcrypt.hash(password, 10);
+
+
+        // ==================================
+        // INICIAR TRANSACCIÓN
+        // ==================================
+
+        await client.query("BEGIN");
+
+
+        // ==================================
+        // ACTUALIZAR CONTRASEÑA
+        // ==================================
+
+        await client.query(
+            `UPDATE usuarios
+             SET password = $1
+             WHERE id = $2`,
+            [
+                passwordHash,
+                recuperacion.usuario_id
+            ]
+        );
+
+
+        // ==================================
+        // MARCAR TOKEN COMO USADO
+        // ==================================
+
+        await client.query(
+            `UPDATE recuperaciones_password
+             SET usado = TRUE
+             WHERE id = $1`,
+            [recuperacion.id]
+        );
+
+
+        // ==================================
+        // CONFIRMAR TRANSACCIÓN
+        // ==================================
+
+        await client.query("COMMIT");
+
+
+        // ==================================
+        // RESPUESTA
+        // ==================================
+
+        res.status(200).json({
+            mensaje:
+                "Contraseña actualizada correctamente"
+        });
+
+
+    } catch (error) {
+
+        // ==================================
+        // DESHACER CAMBIOS
+        // ==================================
+
+        await client.query("ROLLBACK");
+
+
+        console.error(
+            "Error restableciendo contraseña:",
+            error
+        );
+
+
+        res.status(500).json({
+            mensaje:
+                "No se pudo restablecer la contraseña"
+        });
+
+
+    } finally {
+
+        // ==================================
+        // DEVOLVER CONEXIÓN AL POOL
+        // ==================================
+
+        client.release();
+
+    }
+
+}
+
 //Obtener info de clientes
 async function obtenerClientes(req, res) {
 
@@ -306,5 +500,6 @@ module.exports = {
     crearUsuario,
     iniciarSesion,
     obtenerClientes,
-    solicitarRecuperacion
+    solicitarRecuperacion,
+    restablecerPassword
 };
