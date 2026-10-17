@@ -114,21 +114,20 @@ btnProductos.addEventListener(
 
 // PEDIDOS
 
+// =========================
+// PEDIDOS
+// =========================
+
 const btnPedidos =
     document.getElementById("btnPedidos");
-
 
 btnPedidos.addEventListener(
     "click",
     () => {
-
-        alert(
-            "El módulo de pedidos estará disponible próximamente."
-        );
-
+        window.location.href =
+            "admin-pedidos.html";
     }
 );
-
 
 // CLIENTES
 
@@ -164,6 +163,11 @@ btnPagos.addEventListener(
     }
 );
 
+
+// =========================
+// OBTENER ESTADÍSTICAS
+// =========================
+
 async function obtenerEstadisticas() {
 
     try {
@@ -194,16 +198,49 @@ async function obtenerEstadisticas() {
         }
 
 
-        // Mostrar productos
+        // =========================
+        // PRODUCTOS
+        // =========================
+
         document.getElementById(
             "totalProductos"
         ).textContent = datos.productos;
 
 
-        // Mostrar usuarios
+        // =========================
+        // USUARIOS
+        // =========================
+
         document.getElementById(
             "totalUsuarios"
         ).textContent = datos.usuarios;
+
+
+        // =========================
+        // TOTAL DE PEDIDOS
+        // =========================
+
+        document.getElementById(
+            "totalPedidos"
+        ).textContent = datos.pedidos.total;
+
+
+        // =========================
+        // PEDIDOS PENDIENTES
+        // =========================
+
+        document.getElementById(
+            "pedidosPendientes"
+        ).textContent = datos.pedidos.pendientes;
+
+
+        // =========================
+        // PEDIDOS ENTREGADOS
+        // =========================
+
+        document.getElementById(
+            "pedidosEntregados"
+        ).textContent = datos.pedidos.entregados;
 
 
     } catch (error) {
@@ -216,7 +253,6 @@ async function obtenerEstadisticas() {
     }
 
 }
-
 
 // EJECUTAR
 

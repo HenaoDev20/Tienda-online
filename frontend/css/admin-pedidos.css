@@ -1,0 +1,215 @@
+/* =========================
+   ESTILOS GENERALES
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #222;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header-admin {
+    background-color: #222;
+    color: white;
+    padding: 25px 40px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-admin h1 {
+    margin-bottom: 10px;
+}
+
+.header-admin p {
+    color: #ddd;
+}
+
+.btn-volver {
+    background-color: white;
+    color: #222;
+    padding: 12px 18px;
+
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-volver:hover {
+    background-color: #e5e5e5;
+}
+
+
+/* =========================
+   CONTENEDOR
+========================= */
+
+.contenedor {
+    width: 100%;
+    max-width: 1200px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
+
+.seccion {
+    background-color: white;
+    padding: 25px;
+    margin-bottom: 30px;
+
+    border-radius: 10px;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.seccion h2 {
+    margin-bottom: 20px;
+}
+
+.seccion h3 {
+    margin: 25px 0 15px;
+}
+
+#mensajePedidos {
+    margin-bottom: 15px;
+    color: #666;
+}
+
+
+/* =========================
+   TABLAS
+========================= */
+
+.tabla-contenedor {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+thead {
+    background-color: #222;
+    color: white;
+}
+
+th,
+td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+    background-color: #f8f8f8;
+}
+
+
+/* =========================
+   BOTONES
+========================= */
+
+.btn-detalle {
+    background-color: #222;
+    color: white;
+
+    border: none;
+    border-radius: 6px;
+
+    padding: 10px 15px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-detalle:hover {
+    background-color: #444;
+}
+
+
+/* =========================
+   DETALLE DEL PEDIDO
+========================= */
+
+#informacionPedido {
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+#informacionPedido p {
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+#informacionPedido p:last-child {
+    margin-bottom: 0;
+}
+
+.total-detalle {
+    margin-top: 20px;
+
+    font-size: 20px;
+    font-weight: bold;
+    text-align: right;
+}
+
+
+/* =========================
+   VISIBILIDAD
+========================= */
+
+[hidden] {
+    display: none !important;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    .header-admin {
+        padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-admin h1 {
+        font-size: 24px;
+    }
+
+    .contenedor {
+        margin: 20px auto;
+        padding: 0 12px;
+    }
+
+    .seccion {
+        padding: 15px;
+    }
+
+    th,
+    td {
+        padding: 12px 10px;
+    }
+
+    .total-detalle {
+        font-size: 18px;
+    }
+
+}

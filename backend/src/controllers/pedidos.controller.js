@@ -507,6 +507,250 @@ async function obtenerPedidoPorId(req, res) {
 }
 
 // =========================
+// OBTENER TODOS LOS PEDIDOS
+// ADMINISTRADOR
+// =========================
+
+async function obtenerTodosLosPedidos(req, res) {
+    try {
+
+        // Consultar pedidos, clientes y productos
+        const resultado = await pool.query(
+            `SELECT
+                pe.id AS pedido_id,
+                pe.fecha,
+                pe.total,
+                pe.estado,
+
+                u.id AS cliente_id,
+                u.nombre AS cliente_nombre,
+                u.email AS cliente_email,
+
+                dp.id AS detalle_id,
+                dp.producto_id,
+                p.nombre AS producto_nombre,
+                p.marca AS producto_marca,
+                dp.cantidad,
+                dp.precio,
+                dp.subtotal
+
+            FROM pedidos pe
+
+            INNER JOIN usuarios u
+                ON pe.usuario_id = u.id
+
+            LEFT JOIN detalle_pedido dp
+                ON pe.id = dp.pedido_id
+
+            LEFT JOIN productos p
+                ON dp.producto_id = p.id
+
+            ORDER BY
+                pe.fecha DESC,
+                pe.id DESC,
+                dp.id ASC`
+        );
+
+        // Organizar los resultados por pedido
+        const pedidosMap = new Map();
+
+        for (const fila of resultado.rows) {
+
+            // Crear el pedido si todavía no existe
+            if (!pedidosMap.has(fila.pedido_id)) {
+
+                pedidosMap.set(fila.pedido_id, {
+                    id: fila.pedido_id,
+                    fecha: fila.fecha,
+                    total: fila.total,
+                    estado: fila.estado,
+
+                    cliente: {
+                        id: fila.cliente_id,
+                        nombre: fila.cliente_nombre,
+                        email: fila.cliente_email
+                    },
+
+                    productos: []
+                });
+            }
+
+            // Agregar los productos del pedido
+            if (fila.detalle_id !== null) {
+
+                pedidosMap.get(fila.pedido_id).productos.push({
+                    detalle_id: fila.detalle_id,
+                    producto_id: fila.producto_id,
+                    nombre: fila.producto_nombre,
+                    marca: fila.producto_marca,
+                    cantidad: fila.cantidad,
+                    precio: fila.precio,
+                    subtotal: fila.subtotal
+                });
+            }
+        }
+
+        const pedidos = Array.from(pedidosMap.values());
+
+        // Enviar respuesta
+        res.status(200).json({
+            pedidos: pedidos
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Error obteniendo todos los pedidos:",
+            error
+        );
+
+        res.status(500).json({
+            mensaje: "Error al obtener los pedidos"
+        });
+    }
+}
+
+// =========================
+// ACTUALIZAR ESTADO DE PEDIDO
+// ADMINISTRADOR
+// =========================
+
+async function actualizarEstadoPedido(req, res) {
+
+    const { id } = req.params;
+    const { estado } = req.body;
+
+    // Validar el ID del pedido
+
+    if (!/^[1-9]\d*$/.test(String(id))) {
+
+        return res.status(400).json({
+            mensaje: "ID de pedido inválido"
+        });
+
+    }
+
+    // Definir las transiciones permitidas
+
+    const transiciones = {
+        pendiente: "confirmado",
+        confirmado: "enviado",
+        enviado: "entregado"
+    };
+
+    const estadosValidos = [
+        "pendiente",
+        "confirmado",
+        "enviado",
+        "entregado"
+    ];
+
+    // Validar el estado solicitado
+
+    if (!estadosValidos.includes(estado)) {
+
+        return res.status(400).json({
+            mensaje: "Estado de pedido inválido"
+        });
+
+    }
+
+    let client;
+
+    try {
+
+        client = await pool.connect();
+
+        // Iniciar transacción
+
+        await client.query("BEGIN");
+
+        // Buscar pedido y bloquear la fila
+        // mientras se actualiza
+
+        const resultado = await client.query(
+            `SELECT id, estado
+             FROM pedidos
+             WHERE id = $1
+             FOR UPDATE`,
+            [id]
+        );
+
+        // Verificar que exista
+
+        if (resultado.rows.length === 0) {
+
+            await client.query("ROLLBACK");
+
+            return res.status(404).json({
+                mensaje: "Pedido no encontrado"
+            });
+
+        }
+
+        const pedido = resultado.rows[0];
+
+        const siguienteEstado =
+            transiciones[pedido.estado];
+
+        // Validar la transición
+
+        if (estado !== siguienteEstado) {
+
+            await client.query("ROLLBACK");
+
+            return res.status(400).json({
+                mensaje:
+                    `No se permite cambiar de ${pedido.estado} a ${estado}`
+            });
+
+        }
+
+        // Actualizar el estado
+
+        const actualizacion = await client.query(
+            `UPDATE pedidos
+             SET estado = $1
+             WHERE id = $2
+             RETURNING id, fecha, total, estado`,
+            [estado, id]
+        );
+
+        // Confirmar transacción
+
+        await client.query("COMMIT");
+
+        res.status(200).json({
+            mensaje: "Estado actualizado correctamente",
+            pedido: actualizacion.rows[0]
+        });
+
+    } catch (error) {
+
+        if (client) {
+            await client.query("ROLLBACK");
+        }
+
+        console.error(
+            "Error actualizando estado del pedido:",
+            error
+        );
+
+        res.status(500).json({
+            mensaje: "Error al actualizar el estado"
+        });
+
+    } finally {
+
+        if (client) {
+            client.release();
+        }
+
+    }
+
+}
+
+// =========================
 // EXPORTAR
 // =========================
 
@@ -514,6 +758,8 @@ module.exports = {
 
     crearPedido,
     obtenerMisPedidos,
-    obtenerPedidoPorId
+    obtenerPedidoPorId,
+    obtenerTodosLosPedidos,
+    actualizarEstadoPedido
 
 };

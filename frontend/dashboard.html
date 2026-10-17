@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -19,7 +20,6 @@
 
 </head>
 
-
 <body>
 
     <!-- ============================= -->
@@ -39,7 +39,6 @@
             </p>
 
         </div>
-
 
         <button id="cerrarSesion">
             Cerrar sesión
@@ -117,6 +116,83 @@
 
             </article>
 
+
+            <!-- TOTAL DE PEDIDOS -->
+
+            <article class="tarjeta-estadistica">
+
+                <div class="icono-estadistica">
+                    🛒
+                </div>
+
+                <div>
+
+                    <h3>
+                        Total de pedidos
+                    </h3>
+
+                    <p
+                        id="totalPedidos"
+                        class="numero-estadistica"
+                    >
+                        0
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- PEDIDOS PENDIENTES -->
+
+            <article class="tarjeta-estadistica">
+
+                <div class="icono-estadistica">
+                    ⏳
+                </div>
+
+                <div>
+
+                    <h3>
+                        Pedidos pendientes
+                    </h3>
+
+                    <p
+                        id="pedidosPendientes"
+                        class="numero-estadistica"
+                    >
+                        0
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <!-- PEDIDOS ENTREGADOS -->
+
+            <article class="tarjeta-estadistica">
+
+                <div class="icono-estadistica">
+                    ✅
+                </div>
+
+                <div>
+
+                    <h3>
+                        Pedidos entregados
+                    </h3>
+
+                    <p
+                        id="pedidosEntregados"
+                        class="numero-estadistica"
+                    >
+                        0
+                    </p>
+
+                </div>
+
+            </article>
 
         </section>
 
@@ -228,12 +304,14 @@
 
             </article>
 
-
         </section>
-
 
     </main>
 
+
+    <!-- ============================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================= -->
 
     <script src="js/dashboard.js"></script>
 

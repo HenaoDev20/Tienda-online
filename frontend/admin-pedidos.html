@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Administrar pedidos - Tienda Online</title>
+
+    <link
+        rel="stylesheet"
+        href="css/admin-pedidos.css"
+    >
+</head>
+
+<body>
+
+    <header class="header-admin">
+
+        <div>
+            <h1>Administración de pedidos</h1>
+            <p>Consulta los pedidos realizados por los clientes.</p>
+        </div>
+
+        <a href="dashboard.html" class="btn-volver">
+            Volver al dashboard
+        </a>
+
+    </header>
+
+    <main class="contenedor">
+
+        <!-- LISTADO DE PEDIDOS -->
+
+        <section class="seccion">
+
+            <h2>Pedidos realizados</h2>
+
+            <p id="mensajePedidos" role="status"></p>
+
+            <div class="tabla-contenedor">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>N.º pedido</th>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaPedidos">
+                        <!-- Pedidos generados con JavaScript -->
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- DETALLE DEL PEDIDO -->
+
+        <section
+            id="seccionDetalle"
+            class="seccion"
+            hidden
+        >
+
+            <h2>Detalle del pedido</h2>
+
+            <div id="informacionPedido">
+                <!-- Información del pedido y cliente -->
+            </div>
+
+            <h3>Productos solicitados</h3>
+
+            <div class="tabla-contenedor">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Marca</th>
+                            <th>Cantidad</th>
+                            <th>Precio unitario</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaDetalle">
+                        <!-- Productos generados con JavaScript -->
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <p id="totalDetalle" class="total-detalle"></p>
+
+        </section>
+
+    </main>
+
+    <script src="js/admin-pedidos.js"></script>
+
+</body>
+
+</html>
