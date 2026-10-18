@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Administración de pagos - Tienda Online</title>
+
+    <link
+        rel="stylesheet"
+        href="css/admin-pagos.css"
+    >
+
+</head>
+
+<body>
+
+    <!-- ========================= -->
+    <!-- HEADER -->
+    <!-- ========================= -->
+
+    <header class="header-admin">
+
+        <div>
+
+            <h1>Administración de pagos</h1>
+
+            <p>
+                Consulta y verifica las transferencias
+                de los clientes.
+            </p>
+
+        </div>
+
+        <a href="dashboard.html" class="btn-volver">
+            Volver al dashboard
+        </a>
+
+    </header>
+
+
+    <!-- ========================= -->
+    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ========================= -->
+
+    <main class="contenedor">
+
+        <section class="seccion">
+
+            <h2>Pagos registrados</h2>
+
+            <p class="aviso">
+                Antes de aprobar un pago, verifica
+                que el dinero haya ingresado realmente
+                a la cuenta bancaria de la tienda.
+            </p>
+
+            <p
+                id="mensajePagos"
+                role="status"
+                aria-live="polite"
+            ></p>
+
+
+            <!-- TABLA DE PAGOS -->
+
+            <div class="tabla-contenedor">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>ID pago</th>
+                            <th>Pedido</th>
+                            <th>Cliente</th>
+                            <th>Correo</th>
+                            <th>Monto</th>
+                            <th>Método</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tablaPagos">
+
+                        <!-- Datos generados por JavaScript -->
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="js/admin-pagos.js"></script>
+
+</body>
+
+</html>

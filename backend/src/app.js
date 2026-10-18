@@ -12,6 +12,7 @@ app.use(cors());
 // Middleware para leer JSON
 app.use(express.json());
 
+//Importar rutas
 
 // Rutas de productos
 const productosRoutes = require("./routes/productos.routes");
@@ -35,13 +36,20 @@ const pedidosRoutes =
 const recuperacionRoutes =
          require("./routes/recuperacion.routes");
 
+// Rutas de pagos
+const pagosRoutes =
+    require("./routes/pagos.routes");
+
 // Registrar rutas
 app.use("/productos", productosRoutes);
 app.use("/usuarios", usuariosRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/pedidos", pedidosRoutes);
 app.use("/recuperacion", recuperacionRoutes);
+app.use("/pagos", pagosRoutes);
 
+
+//Ruta prueba 
 app.get("/prueba", (req, res) => {
     res.json({
         mensaje: "El servidor funciona correctamente"

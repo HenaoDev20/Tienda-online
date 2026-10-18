@@ -213,3 +213,44 @@ tbody tr:hover {
     }
 
 }
+
+/* =========================
+   ESTADOS DE LOS PEDIDOS
+========================= */
+
+.estado {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+/* PENDIENTE */
+
+.estado-pendiente {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+/* CONFIRMADO */
+
+.estado-confirmado {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+}
+
+/* ENVIADO */
+
+.estado-enviado {
+    background-color: #ede9fe;
+    color: #6d28d9;
+}
+
+/* ENTREGADO */
+
+.estado-entregado {
+    background-color: #dcfce7;
+    color: #166534;
+}

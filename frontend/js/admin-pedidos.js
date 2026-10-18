@@ -53,7 +53,38 @@
 
  }
 
+ // =========================
+// CREAR ETIQUETA DE ESTADO
+// =========================
 
+function crearEtiquetaEstado(estado) {
+
+    const etiqueta = document.createElement("span");
+
+    const estadosPermitidos = [
+        "pendiente",
+        "confirmado",
+        "enviado",
+        "entregado"
+    ];
+
+    etiqueta.textContent = estado;
+
+    etiqueta.className = "estado";
+
+    if (estadosPermitidos.includes(estado)) {
+
+        etiqueta.classList.add(
+            `estado-${estado}`
+        );
+
+    }
+
+    return etiqueta;
+
+}
+
+ 
  // =========================
  // ESTADOS DE LOS PEDIDOS
  // =========================
@@ -228,102 +259,141 @@
 
 
  // =========================
- // MOSTRAR PEDIDOS
- // =========================
+// MOSTRAR PEDIDOS
+// =========================
 
- function mostrarPedidos() {
+function mostrarPedidos() {
 
-     tablaPedidos.replaceChildren();
+    tablaPedidos.replaceChildren();
 
-     for (const pedido of pedidos) {
+    for (const pedido of pedidos) {
 
-         const fila = document.createElement("tr");
+        const fila = document.createElement("tr");
 
-         const valores = [
-             `#${pedido.id}`,
-             pedido.cliente.nombre,
-             formatearFecha(pedido.fecha),
-             formatearPrecio(pedido.total),
-             pedido.estado
-         ];
+        // =========================
+        // INFORMACIÓN DEL PEDIDO
+        // =========================
 
-         for (const valor of valores) {
+        const valores = [
+            `#${pedido.id}`,
+            pedido.cliente.nombre,
+            formatearFecha(pedido.fecha),
+            formatearPrecio(pedido.total)
+        ];
 
-             const celda = document.createElement("td");
+        for (const valor of valores) {
 
-             celda.textContent = valor;
+            const celda = document.createElement("td");
 
-             fila.appendChild(celda);
+            celda.textContent = valor;
 
-         }
+            fila.appendChild(celda);
 
-         // =========================
-         // BOTÓN VER DETALLE
-         // =========================
+        }
 
-         const celdaAccion =
-             document.createElement("td");
 
-         const botonDetalle =
-             document.createElement("button");
+        // =========================
+        // ESTADO CON COLOR
+        // =========================
 
-         botonDetalle.textContent =
-             "Ver detalle";
+        const celdaEstado =
+            document.createElement("td");
 
-         botonDetalle.className =
-             "btn-detalle";
+        const etiquetaEstado =
+            crearEtiquetaEstado(pedido.estado);
 
-         botonDetalle.addEventListener(
-             "click",
-             () => {
-                 mostrarDetalle(pedido);
-             }
-         );
+        celdaEstado.appendChild(etiquetaEstado);
 
-         celdaAccion.appendChild(botonDetalle);
+        fila.appendChild(celdaEstado);
 
-         // =========================
-         // BOTÓN CAMBIAR ESTADO
-         // =========================
 
-         const siguienteEstado =
-             obtenerSiguienteEstado(pedido.estado);
+        // =========================
+        // CELDA DE ACCIONES
+        // =========================
 
-         if (siguienteEstado) {
+        const celdaAccion =
+            document.createElement("td");
 
-             const botonEstado =
-                 document.createElement("button");
 
-             botonEstado.textContent =
-                 obtenerTextoBoton(pedido.estado);
+        // =========================
+        // BOTÓN VER DETALLE
+        // =========================
 
-             botonEstado.className =
-                 "btn-estado";
+        const botonDetalle =
+            document.createElement("button");
 
-             botonEstado.disabled = actualizandoEstado;
+        botonDetalle.textContent =
+            "Ver detalle";
 
-             botonEstado.addEventListener(
-                 "click",
-                 () => {
-                     actualizarEstadoPedido(
-                         pedido.id,
-                         siguienteEstado
-                     );
-                 }
-             );
+        botonDetalle.className =
+            "btn-detalle";
 
-             celdaAccion.appendChild(botonEstado);
+        botonDetalle.addEventListener(
+            "click",
+            () => {
 
-         }
+                mostrarDetalle(pedido);
 
-         fila.appendChild(celdaAccion);
+            }
+        );
 
-         tablaPedidos.appendChild(fila);
+        celdaAccion.appendChild(botonDetalle);
 
-     }
 
- }
+        // =========================
+        // BOTÓN CAMBIAR ESTADO
+        // =========================
 
+        const siguienteEstado =
+            obtenerSiguienteEstado(pedido.estado);
+
+        if (siguienteEstado) {
+
+            const botonEstado =
+                document.createElement("button");
+
+            botonEstado.textContent =
+                obtenerTextoBoton(pedido.estado);
+
+            botonEstado.className =
+                "btn-estado";
+
+            botonEstado.disabled =
+                actualizandoEstado;
+
+            botonEstado.addEventListener(
+                "click",
+                () => {
+
+                    actualizarEstadoPedido(
+                        pedido.id,
+                        siguienteEstado
+                    );
+
+                }
+            );
+
+            celdaAccion.appendChild(botonEstado);
+
+        }
+
+
+        // =========================
+        // AGREGAR ACCIONES
+        // =========================
+
+        fila.appendChild(celdaAccion);
+
+
+        // =========================
+        // AGREGAR FILA A LA TABLA
+        // =========================
+
+        tablaPedidos.appendChild(fila);
+
+    }
+
+}
 
  // =========================
  // ACTUALIZAR ESTADO DEL PEDIDO
@@ -410,95 +480,129 @@
 
  }
 
-
  // =========================
- // MOSTRAR DETALLE DEL PEDIDO
- // =========================
+// MOSTRAR DETALLE DEL PEDIDO
+// =========================
 
- function mostrarDetalle(pedido, desplazar = true) {
+function mostrarDetalle(pedido, desplazar = true) {
 
-     pedidoSeleccionadoId = pedido.id;
+    pedidoSeleccionadoId = pedido.id;
 
-     seccionDetalle.hidden = false;
+    seccionDetalle.hidden = false;
 
-     informacionPedido.replaceChildren();
+    informacionPedido.replaceChildren();
 
-     tablaDetalle.replaceChildren();
+    tablaDetalle.replaceChildren();
 
-     // Información general
 
-     const informacion = [
-         ["Número de pedido", `#${pedido.id}`],
-         ["Fecha", formatearFecha(pedido.fecha)],
-         ["Estado", pedido.estado],
-         ["Cliente", pedido.cliente.nombre],
-         ["Correo electrónico", pedido.cliente.email]
-     ];
+    // =========================
+    // INFORMACIÓN GENERAL
+    // =========================
 
-     for (const [titulo, valor] of informacion) {
+    const informacion = [
+        ["Número de pedido", `#${pedido.id}`],
+        ["Fecha", formatearFecha(pedido.fecha)],
+        ["Cliente", pedido.cliente.nombre],
+        ["Correo electrónico", pedido.cliente.email]
+    ];
 
-         const parrafo = document.createElement("p");
+    for (const [titulo, valor] of informacion) {
 
-         const etiqueta = document.createElement("strong");
+        const parrafo =
+            document.createElement("p");
 
-         etiqueta.textContent = `${titulo}: `;
+        const etiqueta =
+            document.createElement("strong");
 
-         parrafo.appendChild(etiqueta);
+        etiqueta.textContent = `${titulo}: `;
 
-         parrafo.appendChild(
-             document.createTextNode(valor)
-         );
+        parrafo.appendChild(etiqueta);
 
-         informacionPedido.appendChild(parrafo);
+        parrafo.appendChild(
+            document.createTextNode(valor)
+        );
 
-     }
+        informacionPedido.appendChild(parrafo);
 
-     // =========================
-     // PRODUCTOS DEL PEDIDO
-     // =========================
+    }
 
-     for (const producto of pedido.productos) {
 
-         const fila = document.createElement("tr");
+    // =========================
+    // ESTADO DEL PEDIDO CON COLOR
+    // =========================
 
-         const valores = [
-             producto.nombre ?? "Producto no disponible",
-             producto.marca ?? "Sin marca",
-             producto.cantidad,
-             formatearPrecio(producto.precio),
-             formatearPrecio(producto.subtotal)
-         ];
+    const parrafoEstado =
+        document.createElement("p");
 
-         for (const valor of valores) {
+    const tituloEstado =
+        document.createElement("strong");
 
-             const celda = document.createElement("td");
+    tituloEstado.textContent = "Estado: ";
 
-             celda.textContent = valor;
+    parrafoEstado.appendChild(tituloEstado);
 
-             fila.appendChild(celda);
+    parrafoEstado.appendChild(
+        crearEtiquetaEstado(pedido.estado)
+    );
 
-         }
+    informacionPedido.appendChild(parrafoEstado);
 
-         tablaDetalle.appendChild(fila);
 
-     }
+    // =========================
+    // PRODUCTOS DEL PEDIDO
+    // =========================
 
-     // Total general
+    for (const producto of pedido.productos) {
 
-     totalDetalle.textContent =
-         `Total del pedido: ${formatearPrecio(pedido.total)}`;
+        const fila =
+            document.createElement("tr");
 
-     if (desplazar) {
+        const valores = [
+            producto.nombre ?? "Producto no disponible",
+            producto.marca ?? "Sin marca",
+            producto.cantidad,
+            formatearPrecio(producto.precio),
+            formatearPrecio(producto.subtotal)
+        ];
 
-         seccionDetalle.scrollIntoView({
-             behavior: "smooth",
-             block: "start"
-         });
+        for (const valor of valores) {
 
-     }
+            const celda =
+                document.createElement("td");
 
- }
+            celda.textContent = valor;
 
+            fila.appendChild(celda);
+
+        }
+
+        tablaDetalle.appendChild(fila);
+
+    }
+
+
+    // =========================
+    // TOTAL GENERAL
+    // =========================
+
+    totalDetalle.textContent =
+        `Total del pedido: ${formatearPrecio(pedido.total)}`;
+
+
+    // =========================
+    // DESPLAZAR HACIA EL DETALLE
+    // =========================
+
+    if (desplazar) {
+
+        seccionDetalle.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }
+
+}
 
  // =========================
  // INICIALIZAR

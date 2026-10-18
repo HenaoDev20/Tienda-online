@@ -148,20 +148,18 @@ btnClientes.addEventListener(
 
 // PAGOS
 
+// =========================
+// PAGOS
+// =========================
+
 const btnPagos =
     document.getElementById("btnPagos");
 
+btnPagos.addEventListener("click", () => {
 
-btnPagos.addEventListener(
-    "click",
-    () => {
+    window.location.href = "admin-pagos.html";
 
-        alert(
-            "El módulo de pagos estará disponible próximamente."
-        );
-
-    }
-);
+});
 
 
 // =========================
