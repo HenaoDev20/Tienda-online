@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Pagar pedido - Tienda Online</title>
+
+    <link
+        rel="stylesheet"
+        href="css/pagar-pedido.css"
+    >
+</head>
+
+<body>
+
+    <header class="header-pago">
+
+        <h1>Tienda Online</h1>
+
+        <a href="perfil.html">
+            Mi cuenta
+        </a>
+
+    </header>
+
+    <main class="contenedor-pago">
+
+        <section class="tarjeta-pago">
+
+            <h2>Pago por transferencia bancaria</h2>
+
+            <p class="subtitulo">
+                Consulta el valor de tu pedido y realiza
+                la transferencia a la cuenta del negocio.
+            </p>
+
+            <!-- RESUMEN DEL PEDIDO -->
+
+            <div class="resumen-pedido">
+
+                <p>
+                    <strong>Número del pedido:</strong>
+                    <span id="numeroPedido">Cargando...</span>
+                </p>
+
+                <p>
+                    <strong>Total a pagar:</strong>
+                    <span id="totalPedido">Cargando...</span>
+                </p>
+
+                <p>
+                    <strong>Estado del pago:</strong>
+                    <span id="estadoPago">Consultando...</span>
+                </p>
+
+            </div>
+
+            <!-- DATOS BANCARIOS -->
+
+            <section class="datos-bancarios">
+
+                <h3>Datos para realizar la transferencia</h3>
+
+                <p>
+                    <strong>Banco:</strong>
+                    <span>Por configurar</span>
+                </p>
+
+                <p>
+                    <strong>Tipo de cuenta:</strong>
+                    <span>Por configurar</span>
+                </p>
+
+                <p>
+                    <strong>Titular:</strong>
+                    <span>Por configurar</span>
+                </p>
+
+                <p>
+                    <strong>Número de cuenta:</strong>
+                    <span>Por configurar</span>
+                </p>
+
+                <p class="aviso">
+                    Estos datos son provisionales.
+                    No realices transferencias hasta
+                    que la tienda publique sus datos
+                    bancarios oficiales.
+                </p>
+
+            </section>
+
+            <!-- NOTIFICACIÓN DEL CLIENTE -->
+
+            <form id="formularioNotificacion" hidden>
+
+                <h3>Notificar transferencia</h3>
+
+                <label for="referencia">
+                    Referencia bancaria (opcional)
+                </label>
+
+                <input
+                    type="text"
+                    id="referencia"
+                    maxlength="100"
+                    placeholder="Número de referencia"
+                >
+
+                <button
+                    type="submit"
+                    id="btnNotificar"
+                >
+                    Ya realicé la transferencia
+                </button>
+
+            </form>
+
+            <p
+                id="mensajePago"
+                role="status"
+                aria-live="polite"
+            ></p>
+
+            <a
+                href="perfil.html"
+                class="enlace-volver"
+            >
+                Volver a mis pedidos
+            </a>
+
+        </section>
+
+    </main>
+
+    <script src="js/pagar-pedido.js"></script>
+
+</body>
+
+</html>

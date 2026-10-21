@@ -523,148 +523,175 @@ function guardarCarrito() {
 }
 
 
-// =========================
-// FINALIZAR COMPRA
-// =========================
 
-async function finalizarCompra() {
+ // =========================
+ // FINALIZAR COMPRA
+ // =========================
 
-    // Verificar que haya productos
-    if (carrito.length === 0) {
+ async function finalizarCompra() {
 
-        alert(
-            "El carrito está vacío."
-        );
+     if (carrito.length === 0) {
 
-        return;
+         alert("El carrito está vacío.");
+         return;
 
-    }
+     }
 
+     const boton =
+         document.getElementById("btnFinalizarCompra");
 
-    const boton =
-        document.getElementById(
-            "btnFinalizarCompra"
-        );
+     // Evitar crear otro pedido si ya existe
+     // uno pendiente de registrar su pago.
 
+     const pedidoPendiente =
+         localStorage.getItem("pedidoPendientePago");
 
-    try {
+     if (pedidoPendiente) {
 
-        // Deshabilitar botón
-        boton.disabled = true;
+         alert(
+             "Ya tienes un pedido creado pendiente de continuar su proceso de pago."
+         );
 
-        boton.textContent =
-            "Procesando compra...";
+         window.location.href = "pagar-pedido.html";
 
+         return;
+     }
 
-        // =========================
-        // ENVIAR PEDIDO
-        // =========================
+     let pedidoCreado = null;
 
-        const respuesta = await fetch(
-            "http://localhost:3000/pedidos",
-            {
+     try {
 
-                method: "POST",
+         boton.disabled = true;
+         boton.textContent = "Procesando compra...";
 
-                headers: {
+         // =========================
+         // CREAR PEDIDO
+         // =========================
 
-                    "Authorization":
-                        `Bearer ${token}`,
+         const respuestaPedido = await fetch(
+             "http://localhost:3000/pedidos",
+             {
+                 method: "POST",
 
-                    "Content-Type":
-                        "application/json"
+                 headers: {
+                     "Authorization": `Bearer ${token}`,
+                     "Content-Type": "application/json"
+                 },
 
-                },
+                 body: JSON.stringify({
+                     carrito: carrito
+                 })
+             }
+         );
 
-                body: JSON.stringify({
+         const datosPedido =
+             await respuestaPedido.json();
 
-                    carrito: carrito
+         if (!respuestaPedido.ok) {
 
-                })
+             throw new Error(
+                 datosPedido.mensaje ||
+                 "No se pudo crear el pedido"
+             );
+         }
 
-            }
-        );
+         pedidoCreado = datosPedido.pedido;
 
+         // Guardar ID del pedido creado
+         // antes de continuar con el pago.
 
-        const resultado =
-            await respuesta.json();
+         localStorage.setItem(
+             "pedidoPendientePago",
+             String(pedidoCreado.id)
+         );
 
+         // El pedido ya quedó creado en PostgreSQL.
+         // Vaciar el carrito para evitar repetirlo.
 
-        // =========================
-        // VERIFICAR RESPUESTA
-        // =========================
+         carrito = [];
 
-        if (!respuesta.ok) {
+         localStorage.removeItem("carrito");
 
-            throw new Error(
-                resultado.mensaje ||
-                "No se pudo crear el pedido"
-            );
+         obtenerProductosCarrito();
 
-        }
+         // =========================
+         // REGISTRAR PAGO PENDIENTE
+         // =========================
 
+         const respuestaPago = await fetch(
+             "http://localhost:3000/pagos",
+             {
+                 method: "POST",
 
-        // =========================
-        // PEDIDO CREADO
-        // =========================
+                 headers: {
+                     "Authorization": `Bearer ${token}`,
+                     "Content-Type": "application/json"
+                 },
 
-        console.log(
-            "Pedido creado:",
-            resultado
-        );
+                 body: JSON.stringify({
+                     pedido_id: pedidoCreado.id,
+                     metodo_pago: "transferencia"
+                 })
+             }
+         );
 
+         const datosPago =
+             await respuestaPago.json();
 
-        alert(
-            `Compra realizada correctamente.\n\n` +
-            `Número de pedido: ${resultado.pedido.id}\n` +
-            `Total: $${resultado.pedido.total}`
-        );
+         if (!respuestaPago.ok) {
 
+             throw new Error(
+                 datosPago.mensaje ||
+                 "El pedido se creó, pero no se pudo registrar el pago."
+             );
+         }
 
-        // =========================
-        // VACIAR CARRITO
-        // =========================
+         console.log(
+             "Pago pendiente registrado:",
+             datosPago
+         );
 
-        carrito = [];
+         // =========================
+         // CONTINUAR AL PAGO
+         // =========================
 
+         window.location.href =
+             "pagar-pedido.html";
 
-        localStorage.removeItem(
-            "carrito"
-        );
+     } catch (error) {
 
+         console.error(
+             "Error durante el proceso de compra:",
+             error
+         );
 
-        // =========================
-        // ACTUALIZAR VISTA
-        // =========================
+         if (pedidoCreado) {
 
-        obtenerProductosCarrito();
+             alert(
+                 "El pedido ya fue creado, pero no se pudo completar el registro del pago.\n\n" +
+                 "No vuelvas a crear el pedido. Conservaremos su número para continuar posteriormente.\n\n" +
+                 `Pedido #${pedidoCreado.id}`
+             );
 
+         } else {
 
-    } catch (error) {
+             alert(
+                 error.message ||
+                 "No se pudo crear el pedido."
+             );
 
-        console.error(
-            "Error finalizando compra:",
-            error
-        );
+         }
 
+     } finally {
 
-        alert(
-            error.message ||
-            "Ocurrió un error al realizar la compra."
-        );
+         boton.disabled = false;
 
+         boton.textContent = "Finalizar compra";
 
-    } finally {
+     }
 
-        // Volver a habilitar botón
-        boton.disabled = false;
+ }
 
-        boton.textContent =
-            "Finalizar compra";
-
-    }
-
-}
 
 
 // =========================

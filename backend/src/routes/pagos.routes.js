@@ -1,3 +1,4 @@
+
 const express = require("express");
 
 const router = express.Router();
@@ -5,7 +6,9 @@ const router = express.Router();
 const {
     registrarPago,
     obtenerTodosLosPagos,
-    actualizarEstadoPago
+    actualizarEstadoPago,
+    obtenerMisPagos,
+    notificarTransferencia
 } = require("../controllers/pagos.controller");
 
 const verificarToken =
@@ -17,13 +20,25 @@ const verificarAdmin =
 
 // =========================
 // REGISTRAR PAGO
-// CLIENTE
+// CLIENTE AUTENTICADO
 // =========================
 
 router.post(
     "/",
     verificarToken,
     registrarPago
+);
+
+
+// =========================
+// CONSULTAR MIS PAGOS
+// CLIENTE AUTENTICADO
+// =========================
+
+router.get(
+    "/mis-pagos",
+    verificarToken,
+    obtenerMisPagos
 );
 
 
@@ -50,6 +65,18 @@ router.patch(
     verificarToken,
     verificarAdmin,
     actualizarEstadoPago
+);
+
+
+// =========================
+// NOTIFICAR TRANSFERENCIA
+// CLIENTE AUTENTICADO
+// =========================
+
+router.patch(
+    "/:id/notificar",
+    verificarToken,
+    notificarTransferencia
 );
 
 

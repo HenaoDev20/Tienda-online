@@ -1,0 +1,212 @@
+
+/* =========================
+   ESTILOS GENERALES
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #222;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header-pago {
+    background-color: #222;
+    color: white;
+    padding: 22px 40px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-pago h1 {
+    font-size: 25px;
+}
+
+.header-pago a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* =========================
+   CONTENEDOR
+========================= */
+
+.contenedor-pago {
+    min-height: 85vh;
+    padding: 35px 15px;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.tarjeta-pago {
+    width: 100%;
+    max-width: 650px;
+
+    background-color: white;
+    border-radius: 12px;
+    padding: 35px;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.tarjeta-pago h2 {
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.tarjeta-pago h3 {
+    margin-bottom: 18px;
+}
+
+.subtitulo {
+    text-align: center;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+/* =========================
+   RESUMEN
+========================= */
+
+.resumen-pedido {
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.resumen-pedido p {
+    margin-bottom: 12px;
+}
+
+.resumen-pedido p:last-child {
+    margin-bottom: 0;
+}
+
+/* =========================
+   DATOS BANCARIOS
+========================= */
+
+.datos-bancarios {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.datos-bancarios p {
+    margin-bottom: 12px;
+}
+
+.aviso {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 12px;
+    border-radius: 6px;
+    line-height: 1.5;
+}
+
+/* =========================
+   FORMULARIO
+========================= */
+
+#formularioNotificacion {
+    margin-top: 25px;
+}
+
+#formularioNotificacion label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+#formularioNotificacion input {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+#formularioNotificacion input:focus {
+    outline: none;
+    border-color: #222;
+}
+
+#btnNotificar {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    background-color: #222;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#btnNotificar:hover {
+    background-color: #444;
+}
+
+#btnNotificar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#mensajePago {
+    margin-top: 20px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.enlace-volver {
+    display: block;
+    margin-top: 25px;
+    text-align: center;
+    color: #222;
+    font-weight: bold;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 600px) {
+
+    .header-pago {
+        padding: 18px;
+        flex-direction: column;
+    }
+
+    .tarjeta-pago {
+        padding: 20px;
+    }
+
+    .contenedor-pago {
+        padding: 20px 12px;
+    }
+
+}
